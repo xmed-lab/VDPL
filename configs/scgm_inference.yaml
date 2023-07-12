@@ -1,0 +1,44 @@
+# experiment name
+exp_name: "scgm_test_A"
+exp_desc: "scgm dataset with fp16"
+
+batch_size: 8
+num_epoch: 50
+learning_rate: 0.0001
+weight_decay: 0.01
+warm_up_epochs: 10
+num_workers: 8
+
+model_name: ${exp_name}
+test_vendor: "A"
+domain_label: False
+ratio: 0.2
+fast_train: False
+pretrain: True
+pretrain_file: "/home/hyaoad/code/semi_medical/journal_code/journal_semi_dg/pretrain_res/resnet50_v1c.pth"
+restore: False
+restore_from: ${exp_name}
+
+# for cps
+cps_weight: 1.5
+cps_rampup: True
+consistency_rampup: 25
+
+# for cutmix
+cutmix_mask_prop_range: [0.25, 0.5]
+cutmix_boxmask_n_boxes: 3
+cutmix_boxmask_fixed_aspect_ratio: True
+cutmix_boxmask_by_size: True
+cutmix_boxmask_outside_bounds: True
+cutmix_boxmask_no_invert: True
+
+fourier_augment: True
+fourier_mode: 'AS'
+
+# for bn
+bn_eps: 0.00001
+bn_momentum: 0.1
+
+# for hydra
+hydra:
+  output_subdir: null
