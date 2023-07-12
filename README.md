@@ -35,7 +35,7 @@ bash mms_run.sh
 If you want to run with multiple GPUs, you may need use `accelerate config` to set your environment. 
 
 ### Evaluate
-If you want to evaluate our models on M&Ms dataset, you can use this command. And you should change the model name(line 354 and 355) and the test_vendor(line 352) to load different models.
+If you want to evaluate our models on M&Ms dataset, you can use this command. And you should change the model name(line 201 and 202) and the test_vendor(line 199) to load different models.
 ```
 python inference_mms.py
 ```
