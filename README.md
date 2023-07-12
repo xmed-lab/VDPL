@@ -28,13 +28,14 @@ conda env create -f VDPL_environment.yaml
 ## How to Run
 
 ### Training
-If you want to train the model on M&Ms dataset, you can use this command. You can find the config information in config/mms.yaml.
+If you want to train the model on M&Ms dataset, you can use this command. You can find the config information in config/mms.yaml. 
 ```
 bash mms_run.sh
 ```
+If you want to run with multiple GPUs, you may need use `accelerate config` to set your environment. 
 
 ### Evaluate
-If you want to evaluate our models on M&Ms dataset, you can use this command. And you should change the model name(line 320 and 321) and the test_vendor(line 318) to load different models.
+If you want to evaluate our models on M&Ms dataset, you can use this command. And you should change the model name(line 354 and 355) and the test_vendor(line 352) to load different models.
 ```
 python inference_mms.py
 ```
