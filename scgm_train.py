@@ -295,42 +295,6 @@ def train_one_epoch(model_l, model_r, niters_per_epoch, label_dataloader, unlabe
         logits_u1_tea_2 = torch.softmax(logits_u1_tea_2, dim=1)
         aug_logits_u1_tea_2 = torch.softmax(aug_logits_u1_tea_2, dim=1)
 
-        # logits_cons_tea_1 = logits_u0_tea_1 * \
-        #     (1 - batch_mix_masks) + logits_u1_tea_1 * batch_mix_masks
-        # _, max_1 = torch.max(logits_cons_tea_1, dim=1)
-        # max_1 = max_1.long()
-
-        # aug_logits_cons_tea_1 = aug_logits_u0_tea_1 * \
-        #     (1 - batch_mix_masks) + aug_logits_u1_tea_1 * batch_mix_masks
-        # _, aug_max_1 = torch.max(aug_logits_cons_tea_1, dim=1)
-        # aug_max_1 = aug_max_1.long()
-
-        # logits_cons_tea_2 = logits_u0_tea_2 * \
-        #     (1 - batch_mix_masks) + logits_u1_tea_2 * batch_mix_masks
-        # _, max_2 = torch.max(logits_cons_tea_2, dim=1)
-        # max_2 = max_2.long()
-
-        # aug_logits_cons_tea_2 = aug_logits_u0_tea_2 * \
-        #     (1 - batch_mix_masks) + aug_logits_u1_tea_2 * batch_mix_masks
-        # _, aug_max_2 = torch.max(aug_logits_cons_tea_2, dim=1)
-        # aug_max_2 = aug_max_2.long()
-
-        # # pseudo label 1
-        # prob_un_all_1 = torch.stack([logits_cons_tea_1, aug_logits_cons_tea_1], dim=2)
-        # max_un_all_1 = torch.stack([max_1, aug_max_1], dim=1)
-        # max_conf_un_each_branch_1, _ = torch.max(prob_un_all_1, dim=1)  # bs, n_branch - 1, h, w, d
-        # _, branch_id_un_max_conf_1 = torch.max(max_conf_un_each_branch_1, dim=1,
-        #                                                         keepdim=True)  # bs, h, w, d
-        # ps_label_1 = torch.gather(max_un_all_1, dim=1, index=branch_id_un_max_conf_1)[:, 0]
-
-        # # pseudo label 2
-        # prob_un_all_2 = torch.stack([logits_cons_tea_2, aug_logits_cons_tea_2], dim=2)
-        # max_un_all_2 = torch.stack([max_2, aug_max_2], dim=1)
-        # max_conf_un_each_branch_2, _ = torch.max(prob_un_all_2, dim=1)  # bs, n_branch - 1, h, w, d
-        # _, branch_id_un_max_conf_2 = torch.max(max_conf_un_each_branch_2, dim=1,
-        #                                                         keepdim=True)  # bs, h, w, d
-        # ps_label_2 = torch.gather(max_un_all_2, dim=1, index=branch_id_un_max_conf_2)[:, 0]
-
         logits_u0_tea_1 = (logits_u0_tea_1 + aug_logits_u0_tea_1) / 2
         logits_u1_tea_1 = (logits_u1_tea_1 + aug_logits_u1_tea_1) / 2
         logits_u0_tea_2 = (logits_u0_tea_2 + aug_logits_u0_tea_2) / 2
@@ -518,9 +482,9 @@ def train(label_loader, unlabel_loader_0, unlabel_loader_1, test_loader, val_loa
             f"[ Test | {epoch + 1:03d}/{num_epoch:03d} ] test_loss = {test_loss:.5f} test_dice = {test_dice:.5f}")
 
         # if the model improves, save a checkpoint at this epoch
-        if test_dice > best_dice:
-            best_dice = test_dice
-            # best_test_dice = test_dice
+        if val_dice > best_dice:
+            best_dice = val_dice
+            best_test_dice = test_dice
             model_name_l = 'l_' + cfg.model_name + '.pt'
             model_name_r = 'r_' + cfg.model_name + '.pt'
             model_path_l = os.path.join(os.getcwd(), model_name_l)
@@ -541,7 +505,7 @@ def train(label_loader, unlabel_loader_0, unlabel_loader_1, test_loader, val_loa
                       data={'val/val_dice': val_dice})
             # test
             wandb.log(step=epoch + 1,
-                      data={'test/test_dice': test_dice, 'test/best_dice': best_dice})
+                      data={'test/test_dice': test_dice})
             # loss
             wandb.log(step=epoch + 1,
                       data={'epoch': epoch + 1, 'loss/total_loss': total_loss, 'loss/total_loss_l': total_loss_l,
