@@ -1,7 +1,7 @@
 # Variance-Aware Domain-Augmented Pseudo Labeling for Semi-Supervised Domain Generalization on Medical Image Segmentation
 PyTorch implementation of Variance-Aware Domain-Augmented Pseudo Labeling for Semi-Supervised Domain Generalization on Medical Image Segmentation.
 
-Huifeng Yao, Weihang Dai, Xiaowei Hu, Xiaowei Xu, Xiaomeng Li
+Huifeng Yao, Weihang Dai, Yiqun Lin, Xiaowei Hu, Xiaowei Xu, Xiaomeng Li
 
 The overall framework 
 
